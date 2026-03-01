@@ -9,6 +9,9 @@
 </head>
 
 <body>
+    <div class="progress-container">
+        <div class="progress-bar" id="myBar"></div>
+    </div>
     <header>
         <a href="index.html" class="logo">AD</a>
         <nav>
@@ -80,6 +83,14 @@
     <footer>
         &copy; 2026 Aman Dhaka. All rights reserved.
     </footer>
+    <script>
+        window.addEventListener('scroll', () => {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById("myBar").style.width = scrolled + "%";
+        });
+    </script>
 </body>
 
 </html>
