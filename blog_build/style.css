@@ -1,0 +1,160 @@
+:root {
+  --primary: #E53E3E;
+  --text: #333333;
+  --bg: #ffffff;
+  --nav-bg: #f8f9fa;
+  --border: #e2e8f0;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Arial', sans-serif;
+  color: var(--text);
+  background-color: var(--bg);
+  line-height: 1.6;
+}
+
+a {
+  color: var(--primary);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+header {
+  background-color: var(--nav-bg);
+  border-bottom: 2px solid var(--primary);
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  font-weight: 800;
+  font-size: 2.5rem;
+  color: var(--primary);
+  text-decoration: none;
+}
+.logo:hover { text-decoration: none; }
+
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 1.5rem;
+}
+
+nav a {
+  font-weight: bold;
+  color: var(--text);
+}
+
+nav a:hover {
+  color: var(--primary);
+  text-decoration: none;
+}
+
+main {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+h1, h2, h3 {
+  margin-bottom: 1rem;
+  color: var(--text);
+}
+
+p {
+  margin-bottom: 1rem;
+}
+
+.button {
+  display: inline-block;
+  background-color: var(--primary);
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 4px;
+  font-weight: bold;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.button:hover {
+  background-color: #c53030;
+  color: white;
+  text-decoration: none;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 2rem;
+}
+
+th, td {
+  border: 1px solid var(--border);
+  padding: 0.75rem;
+  text-align: left;
+}
+th {
+  background-color: var(--nav-bg);
+}
+table th, table td {
+  border-color: var(--primary);
+}
+
+.post-card {
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--primary);
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  border-radius: 4px;
+}
+
+.post-card h2 {
+  margin-bottom: 0.5rem;
+}
+
+.post-date {
+  font-size: 0.875rem;
+  color: #666;
+  margin-bottom: 1rem;
+}
+
+ul.skills, ul.contact-links {
+  list-style: none;
+  margin-bottom: 1.5rem;
+}
+
+ul.skills li, ul.contact-links li {
+  margin-bottom: 0.5rem;
+  padding-left: 1.5rem;
+  position: relative;
+}
+
+ul.skills li::before {
+  content: '→';
+  color: var(--primary);
+  position: absolute;
+  left: 0;
+}
+
+footer {
+  text-align: center;
+  padding: 2rem;
+  margin-top: 4rem;
+  border-top: 1px solid var(--border);
+  color: #666;
+  font-size: 0.875rem;
+}
