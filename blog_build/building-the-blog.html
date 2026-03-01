@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Building My Blog: AI Coding, Git & Vercel | Aman Dhaka</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="progress-container">
+        <div class="progress-bar" id="myBar"></div>
+    </div>
+    <header>
+        <a href="index.html" class="logo">AD</a>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="projects.html">Projects</a></li>
+                <li><a href="blog.html">Blog</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <article class="post-card animate-fade-up" style="border: none; padding: 0; box-shadow: none;">
+            <h1>Building My Blog: AI Coding, Git & Vercel</h1>
+            <div class="post-date">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                    <line x1="16" y1="2" x2="16" y2="6"></line>
+                    <line x1="8" y1="2" x2="8" y2="6"></line>
+                    <line x1="3" y1="10" x2="21" y2="10"></line>
+                </svg>
+                Published on March 2, 2026
+            </div>
+
+            <p>Welcome back! If you're reading this, you are looking at my newly developed personal blog. But this isn't
+                just a standard HTML website—it's a testament to the speed and power of modern AI-assisted development
+                and automated CI/CD pipelines.</p>
+
+            <p>Today, I want to pull back the curtain and share exactly how this website was built, designed, and
+                deployed.</p>
+
+            <h2>The Power of AI Coding</h2>
+            <p>I've always been interested in optimizing workflows, and recently, my focus has shifted heavily into
+                <strong>AI coding and development</strong>. Instead of writing every line of CSS by hand, I utilized the
+                <strong>Antigravity framework</strong>—an advanced AI coding assistant—to pair-program the entire
+                structure of this site.</p>
+
+            <p>By providing clear, deterministic prompts, the AI was able to:</p>
+            <ul class="skills">
+                <li>Generate elegant, semantic HTML5 structures.</li>
+                <li>Implement a modern CSS design system utilizing CSS variables and the sleek 'Outfit' font family.
+                </li>
+                <li>Create complex micro-animations, like the scrolling progress bar you see at the top of this screen
+                    and the smooth fade-ups on page load.</li>
+            </ul>
+
+            <h2>Version Control: GitHub</h2>
+            <p>Code is only as good as its history. To ensure I could track every change, rollback mistakes, and
+                maintain a professional workflow, I initialized a Git repository and pushed everything to GitHub.</p>
+
+            <p>One interesting challenge we faced was managing tracked files. Initially, my raw Markdown draft files
+                were being pushed to the public repo. Using Git CLI, I utilized <code>git rm --cached *.md</code> and
+                updated the <code>.gitignore</code> file to keep the raw content strictly on my local machine while
+                sharing the polished HTML worldwide.</p>
+
+            <h2>Continuous Deployment: Vercel</h2>
+            <p>The final piece of the puzzle was hosting. I connected my public GitHub repository directly to
+                <strong>Vercel</strong>. Vercel acts as a continuous deployment (CD) pipeline.</p>
+
+            <p>Now, whenever I write a new blog post (like this one!) or tweak a CSS file on my local machine, I simply
+                run <code>git commit</code> and <code>git push</code>. Vercel instantly detects the change on the
+                <code>main</code> branch and updates the live website within seconds. Zero manual uploading required.
+            </p>
+
+            <h2>What's Next?</h2>
+            <p>This blog is my sandbox for testing new AI development techniques, UI designs, and infrastructure tools.
+                Stay tuned for more posts as I dive deeper into automated development!</p>
+        </article>
+
+        <div class="animate-fade-up delay-100" style="margin-top: 3rem; text-align: center;">
+            <a href="blog.html" class="button button-outline">← Back to Blog</a>
+        </div>
+    </main>
+
+    <footer>
+        &copy; 2026 Aman Dhaka. All rights reserved.
+    </footer>
+    <script>
+        window.addEventListener('scroll', () => {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById("myBar").style.width = scrolled + "%";
+        });
+    </script>
+</body>
+
+</html>
