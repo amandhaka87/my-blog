@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Aman Dhaka | Home</title>
   <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
   <header>
     <a href="index.html" class="logo">AD</a>
@@ -20,14 +22,15 @@
   </header>
 
   <main>
-    <section>
+    <section class="animate-fade-up">
       <h1>Hi, I’m Aman Dhaka 🚀</h1>
       <h2>DevOps Engineer ➡️ Aspiring MLOps Specialist</h2>
-      <p>Welcome to my digital space. I’m a 4th-semester BCA student currently dedicated to a 7-hour daily study grind to bridge the gap between traditional infrastructure and Machine Learning.</p>
-      
-      <div style="margin: 2rem 0;">
+      <p>Welcome to my digital space. I’m a 4th-semester BCA student currently dedicated to a 7-hour daily study grind
+        to bridge the gap between traditional infrastructure and Machine Learning.</p>
+
+      <div class="flex items-center gap-1 mt-2 mb-2">
         <a href="blog.html" class="button">Read my Blog</a>
-        <a href="contact.html" class="button" style="background-color: transparent; color: var(--primary); border: 2px solid var(--primary); margin-left: 1rem;">Get in Touch</a>
+        <a href="contact.html" class="button button-outline">Get in Touch</a>
       </div>
 
       <h3>🛠️ The 2026 MLOps Roadmap</h3>
@@ -74,8 +77,30 @@
         </tbody>
       </table>
 
-      <h3>Why MLOps?</h3>
-      <p>I believe infrastructure should be intelligent. From building voice assistants to managing virtualized clusters, my goal is to automate the entire lifecycle of AI—making it as reliable as a standard DevOps pipeline.</p>
+      <h3 class="mt-2 text-xl font-bold">Why MLOps?</h3>
+      <p>I believe infrastructure should be intelligent. From building voice assistants to managing virtualized
+        clusters, my goal is to automate the entire lifecycle of AI—making it as reliable as a standard DevOps pipeline.
+      </p>
+
+      <hr style="border:0; border-top: 1px solid var(--border); margin: 3rem 0;">
+
+      <h3 class="animate-fade-up delay-100">📝 Recent Posts</h3>
+      <div class="post-card animate-fade-up delay-200">
+        <h2><a href="post.html">My First Post: From DevOps to MLOps — The Journey Begins</a></h2>
+        <div class="post-date">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+            <line x1="16" y1="2" x2="16" y2="6"></line>
+            <line x1="8" y1="2" x2="8" y2="6"></line>
+            <line x1="3" y1="10" x2="21" y2="10"></line>
+          </svg>
+          Published on March 2, 2026
+        </div>
+        <p>I’ve always been fascinated by how we can make systems "smarter." Whether it was building my
+          Python-based voice assistant using SpeechRecognition and Pyttsx3 or automating daily workflows...</p>
+        <a href="post.html" class="button mt-2">Read Article</a>
+      </div>
     </section>
   </main>
 
@@ -83,4 +108,5 @@
     &copy; 2026 Aman Dhaka. All rights reserved.
   </footer>
 </body>
+
 </html>
