@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jarvis Web Assistant</title>
+    <!-- Use a modern Google Font (Inter) -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --glass-bg: rgba(30, 41, 59, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --accent: #38bdf8;
+            --accent-glow: rgba(56, 189, 248, 0.5);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            /* A stunning radial gradient background */
+            background-image: radial-gradient(circle at 50% 0%, #1e293b 0%, var(--bg-color) 70%);
+        }
+
+        /* Glassmorphism Container */
+        .container {
+            width: 90%;
+            max-width: 500px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 2.5rem 2rem;
+            text-align: center;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        h1 {
+            font-weight: 600;
+            margin-top: 0;
+            margin-bottom: 0.5rem;
+            font-size: 2.2rem;
+            background: linear-gradient(to right, #38bdf8, #818cf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        p.subtitle {
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+            font-size: 0.95rem;
+        }
+
+        /* Chat visualization area */
+        .chat-area {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 16px;
+            padding: 1.5rem;
+            min-height: 160px;
+            margin-bottom: 2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .message {
+            margin: 0.5rem 0;
+            font-size: 1.1rem;
+            line-height: 1.5;
+            transition: all 0.3s ease;
+        }
+
+        .user-text {
+            color: var(--text-muted);
+            font-style: italic;
+        }
+
+        .jarvis-text {
+            color: var(--text-main);
+            font-weight: 400;
+            margin-top: 1rem;
+        }
+
+        .status {
+            font-size: 0.85rem;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        /* Animated Microphone Button */
+        .mic-button {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #38bdf8, #818cf8);
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 0 20px var(--accent-glow);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .mic-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 30px var(--accent-glow);
+        }
+
+        .mic-button:active {
+            transform: scale(0.95);
+        }
+
+        /* The glowing pulsing animation for active listening */
+        .mic-button.listening {
+            animation: pulse 1.5s infinite;
+            background: linear-gradient(135deg, #ef4444, #f43f5e); /* Red when active */
+            box-shadow: 0 0 30px rgba(239, 68, 68, 0.6);
+        }
+
+        .mic-button svg {
+            width: 32px;
+            height: 32px;
+            fill: white;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
+            70% { box-shadow: 0 0 0 20px rgba(239, 68, 68, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Jarvis Web</h1>
+        <p class="subtitle">AI Voice Assistant Powered by Llama-3</p>
+
+        <div class="chat-area" id="chatArea">
+            <div class="status" id="statusText">System Online</div>
+            <div class="message user-text" id="userText">Tap the microphone to start...</div>
+            <div class="message jarvis-text" id="jarvisText"></div>
+        </div>
+
+        <button class="mic-button" id="micBtn" onclick="toggleListening()">
+            <!-- SVG Mic Icon -->
+            <svg viewBox="0 0 24 24">
+                <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/>
+                <path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/>
+            </svg>
+        </button>
+    </div>
+
+    <!-- The Javascript Engine for the Web App -->
+    <script>
+        const micBtn = document.getElementById('micBtn');
+        const statusText = document.getElementById('statusText');
+        const userText = document.getElementById('userText');
+        const jarvisText = document.getElementById('jarvisText');
+
+        // Initialize Browser's native Speech-to-Text
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        let recognition = null;
+        let isListening = false;
+
+        if (SpeechRecognition) {
+            recognition = new SpeechRecognition();
+            recognition.continuous = false; // Stop listening after one sentence
+            recognition.lang = 'en-IN'; // Better at understanding Indian accents/Hinglish
+            recognition.interimResults = false;
+
+            recognition.onstart = () => {
+                isListening = true;
+                micBtn.classList.add('listening');
+                statusText.innerText = 'Listening...';
+                userText.innerText = 'Go ahead, I am listening...';
+                jarvisText.innerText = '';
+            };
+
+            recognition.onresult = async (event) => {
+                const transcript = event.results[0][0].transcript;
+                userText.innerText = `"${transcript}"`;
+                // Pass the text to our Python serverless function
+                await sendToJarvis(transcript);
+            };
+
+            recognition.onerror = (event) => {
+                console.error("Speech Error:", event.error);
+                statusText.innerText = 'Audio Error. Try again.';
+                resetMic();
+            };
+
+            recognition.onend = () => {
+                resetMic();
+            };
+        } else {
+            statusText.innerText = "Speech Recognition not supported in this browser. Try Chrome/Edge.";
+        }
+
+        function resetMic() {
+            isListening = false;
+            micBtn.classList.remove('listening');
+            if(statusText.innerText === 'Listening...') {
+                statusText.innerText = 'Ready';
+            }
+        }
+
+        function toggleListening() {
+            if (!recognition) return;
+            
+            if (isListening) {
+                recognition.stop();
+            } else {
+                window.speechSynthesis.cancel(); // Stop talking if currently talking
+                recognition.start();
+            }
+        }
+
+        // Initialize Browser's native Text-to-Speech
+        function speak(text) {
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.rate = 1.0;
+            utterance.pitch = 1.0;
+            
+            // Pick a good default voice
+            const voices = window.speechSynthesis.getVoices();
+            const preferredVoice = voices.find(v => v.name.includes('Google UK English Male') || v.name.includes('Google') || v.lang.startsWith('en-'));
+            if(preferredVoice) utterance.voice = preferredVoice;
+
+            window.speechSynthesis.speak(utterance);
+        }
+
+        // Connect back to the Vercel API
+        async function sendToJarvis(text) {
+            statusText.innerText = 'Thinking...';
+            
+            try {
+                // Call the production Vercel server
+                const response = await fetch('/api/chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ message: text })
+                });
+
+                const data = await response.json();
+                
+                if(data.reply) {
+                    jarvisText.innerText = data.reply;
+                    statusText.innerText = 'Speaking';
+                    speak(data.reply);
+                } else {
+                    throw new Error("Invalid reply");
+                }
+                
+            } catch (err) {
+                console.error(err);
+                statusText.innerText = 'Disconnected';
+                jarvisText.innerText = 'Could not reach the server. Is the API running?';
+            }
+        }
+    </script>
+</body>
+</html>
