@@ -7,96 +7,91 @@
     <!-- Master stylesheet connection to inherit all standard aesthetics seamlessly -->
     <link rel="stylesheet" href="style.css">
     <style>
-        /* Specific Jarvis UI Overrides extending Antigravity Framework */
+        /* Specific Jarvis UI Overrides extending Dark Mode Framework */
         .jarvis-container {
             text-align: center;
             max-width: 600px;
             margin: 0 auto;
         }
 
-        /* Using the framework's variables to mirror card layout */
         .chat-area {
-            background-color: transparent; /* Let the glassmorphism shine */
-            border-radius: 24px;
-            padding: 2.5rem;
+            background-color: transparent;
+            border-radius: 12px;
+            padding: 2rem;
             min-height: 250px;
             margin: 2rem 0;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            border: none;
-            box-shadow: none;
+            border: 1px solid transparent; 
         }
 
         .status {
-            font-size: 0.85rem;
-            color: var(--primary);
+            font-size: 0.75rem;
+            color: var(--accent);
             text-transform: uppercase;
             letter-spacing: 2px;
-            margin-bottom: 1.5rem;
-            font-weight: 800;
+            margin-bottom: 1rem;
+            font-weight: 600;
         }
 
         .message {
             margin: 0.5rem 0;
-            font-size: 1.25rem;
+            font-size: 1.15rem;
             line-height: 1.5;
-            transition: all 0.3s ease;
         }
 
         .user-text {
             color: var(--text-muted);
-            font-style: italic;
         }
 
         .jarvis-text {
-            color: var(--text);
-            font-weight: 600;
+            color: #fff;
+            font-weight: 500;
             margin-top: 1rem;
         }
 
-        /* Animated Microphone Button matching the primary vibrant red theme */
+        /* Minimalist Dark Mode Microphone Button */
         .mic-button {
-            width: 80px;
-            height: 80px;
+            width: 60px;
+            height: 60px;
             border-radius: 50%;
-            background-color: var(--primary);
-            border: 4px solid white;
+            background-color: #fff;
+            border: none;
             cursor: pointer;
-            box-shadow: 0 4px 14px 0 rgba(229, 62, 62, 0.39);
             display: flex;
             justify-content: center;
             align-items: center;
             margin: 0 auto;
             transition: var(--transition);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.05);
         }
 
         .mic-button:hover {
-            transform: scale(1.05);
-            background-color: var(--primary-hover);
-            box-shadow: 0 6px 20px rgba(229, 62, 62, 0.5);
-        }
-
-        .mic-button:active {
             transform: scale(0.95);
+            background-color: #e4e4e7;
         }
 
         .mic-button.listening {
-            animation: pulse-red 1.5s infinite;
-            background-color: var(--primary-hover);
+            background-color: var(--accent);
+            box-shadow: 0 0 30px rgba(56, 189, 248, 0.3);
+            animation: breathe 2s ease-in-out infinite alternate;
         }
 
         .mic-button svg {
-            width: 36px;
-            height: 36px;
-            fill: white;
+            width: 24px;
+            height: 24px;
+            fill: #000;
         }
 
-        @keyframes pulse-red {
-            0% { box-shadow: 0 0 0 0 rgba(229, 62, 62, 0.7); }
-            70% { box-shadow: 0 0 0 20px rgba(229, 62, 62, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(229, 62, 62, 0); }
+        .mic-button.listening svg {
+            fill: #fff;
+        }
+
+        @keyframes breathe {
+            0% { transform: scale(0.95); }
+            100% { transform: scale(1.05); }
         }
     </style>
 </head>
