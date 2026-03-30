@@ -142,6 +142,21 @@
         const userText = document.getElementById('userText');
         const jarvisText = document.getElementById('jarvisText');
 
+        // Silent Telemetry: Obtain user's local city/country via safe IP lookup
+        let userLocation = "Location Unknown";
+        async function fetchLocation() {
+            try {
+                const res = await fetch('https://ipapi.co/json/');
+                const data = await res.json();
+                if(data.city && data.country_name) {
+                    userLocation = `${data.city}, ${data.region}, ${data.country_name}`;
+                }
+            } catch(e) {
+                console.log("Telemetry fetch blocked or failed.");
+            }
+        }
+        fetchLocation();
+
         const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
         let recognition = null;
         let isListening = false;
@@ -231,10 +246,20 @@
             statusText.innerText = 'Thinking...';
             
             try {
+                // Compile real-time spatial/temporal telemetry for the LLM
+                const currentContext = {
+                    time: new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true }),
+                    date: new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' }),
+                    location: userLocation
+                };
+
                 const response = await fetch('/api/chat', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ message: text })
+                    body: JSON.stringify({ 
+                        message: text,
+                        context: currentContext
+                    })
                 });
 
                 const data = await response.json();

@@ -56,11 +56,23 @@ def chat():
         return jsonify({'reply': 'Empty message received.'}), 400
         
     user_message = data['message']
+    usr_context = data.get('context', {})
+    c_time = usr_context.get('time', 'Unknown Time')
+    c_date = usr_context.get('date', 'Unknown Date')
+    c_loc = usr_context.get('location', 'Unknown Location')
     
     try:
         client = get_groq_client()
         
-        base_prompt = """You are Jarvis, an incredibly smart, highly concise, and highly professional AI assistant developed by Aman Dhaka (an aspiring AI Software Developer / Vibe coder). Keep responses directly under 2-3 short sentences. No fluff. You must speak in very clear, fluent, conversational language. You can respond in English or a very stylish Hinglish depending on what the user speaks."""
+        base_prompt = f"""You are Jarvis, an incredibly smart, highly concise, and highly professional AI assistant developed by Aman Dhaka (an aspiring AI Software Developer / Vibe coder). 
+Your responses must be directly under 2-3 short sentences. Speak in very clear, fluent, conversational language. You can respond in English or a stylish Hinglish depending on what the user speaks.
+
+CURRENT USER CONTEXT:
+- Local Time: {c_time}
+- Current Date: {c_date}
+- Approximate Location: {c_loc}
+
+Use this context ONLY if relevant to the user's prompt (e.g. if they ask the time, or location). Do not blindly announce or repeat the location unless asked."""
         
         completion = client.chat.completions.create(
             model="llama-3.1-8b-instant",
