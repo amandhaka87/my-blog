@@ -187,9 +187,24 @@
             }
         }
 
+        let isAudioUnlocked = false;
+
+        // Force voice preloading for mobile engines
+        if (typeof window.speechSynthesis !== 'undefined') {
+            window.speechSynthesis.onvoiceschanged = window.speechSynthesis.getVoices;
+        }
+
         function toggleListening() {
             if (!recognition) return;
             
+            // Critical Mobile Fix: Unlock the audio context synchronously during a direct user gesture (OnClick)
+            if (!isAudioUnlocked) {
+                const primer = new SpeechSynthesisUtterance('');
+                primer.volume = 0; // Silent utterance
+                window.speechSynthesis.speak(primer);
+                isAudioUnlocked = true;
+            }
+
             if (isListening) {
                 recognition.stop();
             } else {
@@ -202,9 +217,11 @@
             const utterance = new SpeechSynthesisUtterance(text);
             utterance.rate = 1.0;
             utterance.pitch = 1.0;
+            utterance.volume = 1.0; // Ensure volume is up
             
             const voices = window.speechSynthesis.getVoices();
-            const preferredVoice = voices.find(v => v.name.includes('Google UK English Male') || v.name.includes('Google') || v.lang.startsWith('en-'));
+            // Broader fallback for iOS/Android generic voices
+            const preferredVoice = voices.find(v => v.name.includes('Google UK English Male') || v.name.includes('Google') || v.name.includes('UK') || v.lang.startsWith('en-'));
             if(preferredVoice) utterance.voice = preferredVoice;
 
             window.speechSynthesis.speak(utterance);
