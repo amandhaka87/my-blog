@@ -242,7 +242,18 @@
                 if(data.reply) {
                     jarvisText.innerText = data.reply;
                     statusText.innerText = 'Speaking';
-                    speak(data.reply);
+                    
+                    if(data.audioBase64) {
+                        // Unleash the Ultra-Premium ElevenLabs Voice Logic
+                        const audio = new Audio("data:audio/mpeg;base64," + data.audioBase64);
+                        audio.onended = () => { resetMic(); };
+                        audio.play();
+                    } else {
+                        // Basic fallback browser robotic voice
+                        speak(data.reply);
+                        // Approximate timeout reset for browser voice
+                        setTimeout(resetMic, 4000); 
+                    }
                 } else {
                     throw new Error("Invalid reply");
                 }
@@ -251,6 +262,7 @@
                 console.error(err);
                 statusText.innerText = 'Disconnected';
                 jarvisText.innerText = 'Could not reach the server. Is the API running?';
+                resetMic();
             }
         }
     </script>

@@ -1,7 +1,9 @@
+import os
+import requests
+import base64
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from groq import Groq
-import os
 
 app = Flask(__name__)
 CORS(app)
@@ -11,6 +13,39 @@ def get_groq_client():
     if not api_key:
         raise ValueError("GROQ_API_KEY is missing from Vercel Environment Variables!")
     return Groq(api_key=api_key)
+
+def generate_elevenlabs_audio(text):
+    eleven_key = os.environ.get("ELEVEN_API_KEY")
+    if not eleven_key:
+        return None
+        
+    # Using 'Adam' - Extremely charismatic, authoritative, fluent in English and Hindi
+    url = "https://api.elevenlabs.io/v1/text-to-speech/pNInz6obpgDQGcFmaJcg"
+    
+    headers = {
+        "Accept": "audio/mpeg",
+        "Content-Type": "application/json",
+        "xi-api-key": eleven_key
+    }
+    
+    data = {
+        "text": text,
+        "model_id": "eleven_multilingual_v2", # Allows flawless transition between Hindi and English
+        "voice_settings": {
+            "stability": 0.5,
+            "similarity_boost": 0.75
+        }
+    }
+    
+    try:
+        response = requests.post(url, json=data, headers=headers, timeout=10) # 10s max for vercel limits
+        if (response.status_code == 200):
+            # Encode mp3 audio buffer into base64 for instant frontend playback
+            return base64.b64encode(response.content).decode('utf-8')
+    except Exception as e:
+        print(f"ElevenLabs TTS Error: {str(e)}")
+        
+    return None
 
 @app.route('/api/chat', methods=['POST'])
 def chat():
@@ -23,26 +58,30 @@ def chat():
     try:
         client = get_groq_client()
         
-        chat_completion = client.chat.completions.create(
-            messages=[
-                {
-                    "role": "system",
-                    "content": "You are a helpful, smart, and concise AI voice assistant named Jarvis. Always reply in exactly 1 or 2 short sentences."
-                },
-                {
-                    "role": "user",
-                    "content": user_message,
-                }
-            ],
+        base_prompt = """You are Jarvis, an incredibly smart, highly concise, and highly professional AI assistant developed by Aman Dhaka (an aspiring AI Software Developer / Vibe coder). Keep responses directly under 2-3 short sentences. No fluff. You must speak in very clear, fluent, conversational language. You can respond in English or a very stylish Hinglish depending on what the user speaks."""
+        
+        completion = client.chat.completions.create(
             model="llama-3.1-8b-instant",
+            messages=[
+                {"role": "system", "content": base_prompt},
+                {"role": "user", "content": user_message}
+            ],
             temperature=0.7,
             max_tokens=150,
+            top_p=1,
+            stream=False
         )
         
-        response_text = chat_completion.choices[0].message.content
-        return jsonify({'reply': response_text})
+        response_text = completion.choices[0].message.content
+        
+        # Parallel Audio Processing Magic
+        audio_payload = generate_elevenlabs_audio(response_text)
+        
+        return jsonify({
+            'reply': response_text,
+            'audioBase64': audio_payload
+        })
         
     except Exception as e:
         print(f"Groq API Error: {str(e)}")
-        # Bhejne wale error mein asali wajah dikhayenge
         return jsonify({'reply': f'Vercel Backend Error: {str(e)}'}), 500
