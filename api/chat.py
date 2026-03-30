@@ -19,8 +19,10 @@ def generate_elevenlabs_audio(text):
     if not eleven_key:
         return None
         
-    # Using 'Adam' - Extremely charismatic, authoritative, fluent in English and Hindi
-    url = "https://api.elevenlabs.io/v1/text-to-speech/pNInz6obpgDQGcFmaJcg"
+    # Allows user to set their exact preferred Voice ID from ElevenLabs Voice Library
+    # Defaulting to Adam if no custom ID is provided
+    voice_id = os.environ.get("ELEVEN_VOICE_ID", "pNInz6obpgDQGcFmaJcg") 
+    url = f"https://api.elevenlabs.io/v1/text-to-speech/{voice_id}"
     
     headers = {
         "Accept": "audio/mpeg",
@@ -30,10 +32,10 @@ def generate_elevenlabs_audio(text):
     
     data = {
         "text": text,
-        "model_id": "eleven_multilingual_v2", # Allows flawless transition between Hindi and English
+        "model_id": "eleven_turbo_v2_5", # THE "TOP VERSION": Zero latency, flawless Hindi & English
         "voice_settings": {
-            "stability": 0.5,
-            "similarity_boost": 0.75
+            "stability": 0.45,
+            "similarity_boost": 0.85
         }
     }
     
