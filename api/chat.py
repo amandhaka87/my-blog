@@ -43,5 +43,6 @@ def chat():
         return jsonify({'reply': response_text})
         
     except Exception as e:
-        print(f"Groq API Error: {e}")
-        return jsonify({'reply': 'Vercel Backend Error: Could not connect to Groq Brain.'}), 500
+        print(f"Groq API Error: {str(e)}")
+        # Bhejne wale error mein asali wajah dikhayenge
+        return jsonify({'reply': f'Vercel Backend Error: {str(e)}'}), 500
