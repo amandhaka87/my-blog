@@ -57,7 +57,6 @@ def chat():
         
     user_message = data['message']
     usr_context = data.get('context', {})
-    history = data.get('history', [])
     c_time = usr_context.get('time', 'Unknown Time')
     c_date = usr_context.get('date', 'Unknown Date')
     c_loc = usr_context.get('location', 'Unknown Location')
@@ -75,17 +74,12 @@ CURRENT USER CONTEXT:
 
 Use this context ONLY if relevant to the user's prompt (e.g. if they ask the time, or location). Do not blindly announce or repeat the location unless asked."""
         
-        messages = [{"role": "system", "content": base_prompt}]
-        for msg in history:
-            if isinstance(msg, dict) and 'role' in msg and 'content' in msg:
-                # Ensure we only include valid roles
-                if msg['role'] in ['user', 'assistant']:
-                    messages.append({"role": msg['role'], "content": msg['content']})
-        messages.append({"role": "user", "content": user_message})
-        
         completion = client.chat.completions.create(
             model="llama-3.1-8b-instant",
-            messages=messages,
+            messages=[
+                {"role": "system", "content": base_prompt},
+                {"role": "user", "content": user_message}
+            ],
             temperature=0.7,
             max_tokens=150,
             top_p=1,
