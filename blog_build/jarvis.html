@@ -169,6 +169,7 @@
         const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
         let recognition = null;
         let isListening = false;
+        let chatHistory = [];
 
         if (SpeechRecognition) {
             recognition = new SpeechRecognition();
@@ -267,7 +268,8 @@
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ 
                         message: text,
-                        context: currentContext
+                        context: currentContext,
+                        history: chatHistory
                     })
                 });
 
@@ -276,6 +278,15 @@
                 if(data.reply) {
                     jarvisText.innerText = data.reply;
                     statusText.innerText = 'Speaking';
+                    
+                    // Add conversation context to history array
+                    chatHistory.push({role: 'user', content: text});
+                    chatHistory.push({role: 'assistant', content: data.reply});
+                    
+                    // Limit history to the last 20 messages to keep prompt size optimal
+                    if (chatHistory.length > 20) {
+                        chatHistory = chatHistory.slice(-20);
+                    }
                     
                     if(data.audioBase64) {
                         // Unleash the Ultra-Premium ElevenLabs Voice Logic
